@@ -35,16 +35,18 @@ async def test_create_and_get_recipe(client):
 
 @pytest.mark.asyncio
 async def test_list_sorted_by_views(client):
-    p1 = {"title": "A",
-          "cooking_time": 10,
-          "ingredients": [{"name": "X", "quantity": "1"}],
-          "description": "",
-         }
-    p2 = {"title": "B",
-          "cooking_time": 5,
-          "ingredients": [{"name": "Y", "quantity": "1"}],
-          "description": "",
-         }
+    p1 = {
+        "title": "A",
+        "cooking_time": 10,
+        "ingredients": [{"name": "X", "quantity": "1"}],
+        "description": "",
+    }
+    p2 = {
+        "title": "B",
+        "cooking_time": 5,
+        "ingredients": [{"name": "Y", "quantity": "1"}],
+        "description": "",
+    }
 
     r1 = await client.post("/recipes", json=p1)
     r2 = await client.post("/recipes", json=p2)
