@@ -23,6 +23,7 @@ AsyncSessionLocal = sessionmaker(
     future=True,
 )
 
+
 async def get_db():
     """
     FastAPI dependency — возвращает AsyncSession.
@@ -30,6 +31,7 @@ async def get_db():
     """
     async with AsyncSessionLocal() as session:
         yield session
+
 
 async def init_db():
     """
