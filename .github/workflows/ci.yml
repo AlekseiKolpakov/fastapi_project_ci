@@ -38,7 +38,8 @@ jobs:
         run: pytest -q
 
       - name: Run tests
-        run: |
-          export PYTHONPATH=$(pwd)
-          python -m pytest -q
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: pytest -q
+
 
