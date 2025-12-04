@@ -9,6 +9,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
+
 # При старте приложения инициализируем БД (таблицы)
 @app.on_event("startup")
 async def on_startup():
