@@ -8,7 +8,7 @@ from . import crud, database, schemas
 app = FastAPI(
     title="Culinary Book API",
     description="Асинхронный API кулинарной книги. Предназначен для фронтенда: список рецептов и детальная страница.",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 
@@ -16,6 +16,7 @@ app = FastAPI(
 @app.on_event("startup")
 async def on_startup():
     await database.init_db()
+
 
 get_db = database.get_db
 
@@ -46,8 +47,12 @@ async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):  
     return recipe
 
 
-@app.post("/recipes", response_model=schemas.RecipeResponse, status_code=status.HTTP_201_CREATED,
-          summary="Создать новый рецепт")
+@app.post(
+    "/recipes",
+    response_model=schemas.RecipeResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Создать новый рецепт",
+)
 async def create_recipe(recipe_in: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)):  # noqa B008
     """
     Создает новый рецепт вместе с ингредиентами.
