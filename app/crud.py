@@ -20,7 +20,7 @@ async def get_recipes(db: AsyncSession) -> List[models.Recipe]:
         .order_by(models.Recipe.views.desc(), models.Recipe.cooking_time)
     )
     result = await db.execute(stmt)
-    return result.scalars().all()
+    return list(result.scalars().all())
 
 
 # --- read single recipe and increment views ---
@@ -33,7 +33,7 @@ async def get_recipe(db: AsyncSession, recipe_id: int) -> Optional[models.Recipe
     recipe = result.scalar_one_or_none()
     if recipe:
         # безопасно увеличить views
-        recipe.views = (recipe.views or 0) + 1
+        recipe.views = (recipe.views or 0) + 1  # type: ignore
         await db.commit()
         # refresh чтобы relationship/атрибуты обновились (expire_on_commit=False обычно достаточно)
         await db.refresh(recipe)

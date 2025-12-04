@@ -36,3 +36,10 @@ jobs:
 
       - name: Run pytest
         run: pytest -q
+
+      - name: Run tests
+        run: |
+          python -m pytest -q
+
+
+
