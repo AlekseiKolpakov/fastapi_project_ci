@@ -1,4 +1,4 @@
-from typing import List, Optional, cast
+from typing import List, Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -33,7 +33,7 @@ async def get_recipe(db: AsyncSession, recipe_id: int) -> Optional[models.Recipe
     recipe = result.scalar_one_or_none()
     if recipe:
         # безопасно увеличить views
-        recipe.views = cast(int, (recipe.views or 0) + 1)
+        recipe.views = (recipe.views or 0) + 1  # type: ignore
         await db.commit()
         # refresh чтобы relationship/атрибуты обновились (expire_on_commit=False обычно достаточно)
         await db.refresh(recipe)
