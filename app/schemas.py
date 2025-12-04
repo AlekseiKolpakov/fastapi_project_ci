@@ -17,7 +17,7 @@ class IngredientResponse(IngredientCreate):
 class RecipeCreate(BaseModel):
     title: str = Field(..., example="Омлет")
     cooking_time: int = Field(..., example=10, description="Время приготовления в минутах")
-    ingredients: List[IngredientCreate] = Field(..., example=[{"name":"Яйцо","quantity":"2 шт"}])
+    ingredients: List[IngredientCreate] = Field(..., example=[{"name": "Яйцо", "quantity": "2 шт"}])
     description: Optional[str] = Field(None, example="Вкусный омлет с зеленью.")
 
 
