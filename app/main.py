@@ -19,7 +19,7 @@ get_db = database.get_db
 
 
 @app.get("/recipes", response_model=List[schemas.RecipeListItem], summary="Список всех рецептов")
-async def list_recipes(db: AsyncSession = Depends(get_db)): # noqa: B008
+async def list_recipes(db: AsyncSession = Depends(get_db)):  # noqa: B008
     """
     Возвращает список рецептов, отсортированный по популярности (views DESC), затем по времени приготовления.
     Для первого экрана (таблица): title, views, cooking_time.
@@ -28,7 +28,7 @@ async def list_recipes(db: AsyncSession = Depends(get_db)): # noqa: B008
 
 
 @app.get("/recipes/{recipe_id}", response_model=schemas.RecipeResponse, summary="Детальная информация рецепта")
-async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)): # noqa: B008
+async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):  # noqa: B008
     """
     Возвращает детальную информацию по рецепту:
     - title
@@ -44,7 +44,7 @@ async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)): #
     return recipe
 
 
-@app.post("/recipes", response_model=schemas.RecipeResponse, status_code=status.HTTP_201_CREATED, 
+@app.post("/recipes", response_model=schemas.RecipeResponse, status_code=status.HTTP_201_CREATED,
           summary="Создать новый рецепт")
 async def create_recipe(recipe_in: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)): # noqa: B008
     """
