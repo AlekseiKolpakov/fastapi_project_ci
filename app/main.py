@@ -1,35 +1,34 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
-from . import schemas, crud, database
+from . import models, schemas, crud, database
 
 app = FastAPI(
     title="Culinary Book API",
     description="Асинхронный API кулинарной книги. Предназначен для фронтенда: список рецептов и детальная страница.",
-    version="1.0.0",
+    version="1.0.0"
 )
-
 
 # При старте приложения инициализируем БД (таблицы)
 @app.on_event("startup")
 async def on_startup():
     await database.init_db()
 
-
 get_db = database.get_db
 
 
 @app.get("/recipes", response_model=List[schemas.RecipeListItem], summary="Список всех рецептов")
-async def list_recipes(db: AsyncSession = Depends(get_db)):  # noqa: B008
+async def list_recipes(db: AsyncSession = Depends(get_db)):
     """
     Возвращает список рецептов, отсортированный по популярности (views DESC), затем по времени приготовления.
     Для первого экрана (таблица): title, views, cooking_time.
     """
-    return await crud.get_recipes(db)
+    recipes = await crud.get_recipes(db)
+    return recipes
 
 
 @app.get("/recipes/{recipe_id}", response_model=schemas.RecipeResponse, summary="Детальная информация рецепта")
-async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):  # noqa: B008
+async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):
     """
     Возвращает детальную информацию по рецепту:
     - title
@@ -45,15 +44,11 @@ async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):  
     return recipe
 
 
-@app.post(
-    "/recipes",
-    response_model=schemas.RecipeResponse,
-    status_code=status.HTTP_201_CREATED,
-    summary="Создать новый рецепт",
-)
-async def create_recipe(recipe_in: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)):  # noqa: B008
+@app.post("/recipes", response_model=schemas.RecipeResponse, status_code=status.HTTP_201_CREATED, summary="Создать новый рецепт")
+async def create_recipe(recipe_in: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)):
     """
     Создает новый рецепт вместе с ингредиентами.
     Тело запроса: RecipeCreate (title, cooking_time, ingredients[], description).
     """
-    return await crud.create_recipe(db, recipe_in)
+    new = await crud.create_recipe(db, recipe_in)
+    return new
