@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
 
+
 class Recipe(Base):
     """
     Таблица recipes:
@@ -13,6 +14,7 @@ class Recipe(Base):
     - description: текстовое описание рецепта
     - ingredients: relationship -> список ингредиентов
     """
+
     __tablename__ = "recipes"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -32,6 +34,7 @@ class Ingredient(Base):
     - quantity: количество / описание (например '2 шт', '100 г')
     - recipe_id: FK -> recipes.id
     """
+
     __tablename__ = "ingredients"
 
     id = Column(Integer, primary_key=True, index=True)

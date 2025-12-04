@@ -1,8 +1,9 @@
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, update
+from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from . import models, schemas
+
 
 # --- read list of recipes (для первого экрана) ---
 async def get_recipes(db: AsyncSession) -> List[models.Recipe]:
@@ -11,9 +12,10 @@ async def get_recipes(db: AsyncSession) -> List[models.Recipe]:
     1) views (desc) — больше просмотров выше
     2) cooking_time (asc) — при равных views, меньшее время выше
     """
-    stmt = select(models.Recipe).options(selectinload(models.Recipe.ingredients)).order_by(
-        models.Recipe.views.desc(),
-        models.Recipe.cooking_time
+    stmt = (
+        select(models.Recipe)
+        .options(selectinload(models.Recipe.ingredients))
+        .order_by(models.Recipe.views.desc(), models.Recipe.cooking_time)
     )
     result = await db.execute(stmt)
     return result.scalars().all()
@@ -43,10 +45,7 @@ async def create_recipe(db: AsyncSession, recipe_in: schemas.RecipeCreate) -> mo
     Возвращает созданный объект Recipe.
     """
     db_recipe = models.Recipe(
-        title=recipe_in.title,
-        cooking_time=recipe_in.cooking_time,
-        description=recipe_in.description,
-        views=0
+        title=recipe_in.title, cooking_time=recipe_in.cooking_time, description=recipe_in.description, views=0
     )
     db.add(db_recipe)
     # flush чтобы получить id (не обязателен, но удобно)
@@ -54,11 +53,7 @@ async def create_recipe(db: AsyncSession, recipe_in: schemas.RecipeCreate) -> mo
 
     ingredients = []
     for ing in recipe_in.ingredients:
-        db_ing = models.Ingredient(
-            name=ing.name,
-            quantity=ing.quantity,
-            recipe=db_recipe
-        )
+        db_ing = models.Ingredient(name=ing.name, quantity=ing.quantity, recipe=db_recipe)
         db.add(db_ing)
         ingredients.append(db_ing)
 
