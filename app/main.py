@@ -1,7 +1,9 @@
-from fastapi import FastAPI, Depends, HTTPException, status
 from typing import List
+
+from fastapi import Depends, FastAPI, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from . import models, schemas, crud, database
+
+from . import crud, database, models, schemas
 
 app = FastAPI(
     title="Culinary Book API",
