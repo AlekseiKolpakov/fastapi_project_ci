@@ -20,7 +20,7 @@ async def get_recipes(db: AsyncSession) -> List[models.Recipe]:
         .order_by(models.Recipe.views.desc(), models.Recipe.cooking_time)
     )
     result = await db.execute(stmt)
-    return result.scalars().all()
+    return list(result.scalars().all())
 
 
 # --- read single recipe and increment views ---
