@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from . import models, schemas
 
+
 # --- read list of recipes (для первого экрана) ---
 async def get_recipes(db: AsyncSession) -> List[models.Recipe]:
     """
