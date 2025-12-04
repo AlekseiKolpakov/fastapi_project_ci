@@ -46,7 +46,7 @@ async def retrieve_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):  
 
 @app.post("/recipes", response_model=schemas.RecipeResponse, status_code=status.HTTP_201_CREATED,
           summary="Создать новый рецепт")
-async def create_recipe(recipe_in: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)): # noqa: B008
+async def create_recipe(recipe_in: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)):  # noqa: B008
     """
     Создает новый рецепт вместе с ингредиентами.
     Тело запроса: RecipeCreate (title, cooking_time, ingredients[], description).
