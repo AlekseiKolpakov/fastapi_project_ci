@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
+
 class IngredientCreate(BaseModel):
     name: str = Field(..., example="Соль")
     quantity: Optional[str] = Field(None, example="1 ч.л.")
